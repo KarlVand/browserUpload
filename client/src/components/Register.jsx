@@ -15,7 +15,7 @@ function Register() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({  username, email, password }),
       });
       const data = await response.json();
       setMessage(data.message);
@@ -53,7 +53,7 @@ function Register() {
                 onChange={(e) => setPassword(e.target.value)}
             />
         </div>
-        <button type="submit">Register</button>
+        <button onClick={handleSubmit} type="submit">Register</button>
       </form>
       {message && <p>{message}</p>}
     </div>

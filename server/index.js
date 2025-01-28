@@ -1,17 +1,19 @@
 
-/* ----- La base pour tous ----- */
+/* ----- La base pour tout ----- */
 const express = require('express');
 const cors = require('cors');
 const { Sequelize, DataTypes } = require('sequelize');
 const routes = require('./routes/index');
 
 /* ----- Import Models ----- */
-const defineUserModel = require('./models/userModel');
+const defineUserModel = require('./models/user');
 
 /* ----- Import Routes ----- */
-const createUserRoutes = require('./routes/userRoutes');
+const createUserRoutes = require('./routes/user');
 
 const app = express();
+/* ------------------- */
+
 
 // Middleware
 app.use(cors());
@@ -23,11 +25,14 @@ const sequelize = new Sequelize({
     storage: './database.sqlite'
 });
 
+
+/* ----- Suite Logique ----- */
+
 // Define User model
 const User = defineUserModel(sequelize);
 const userRoutes = createUserRoutes(User);
 
-app.use('/api/users', userRoutes);
+
 
 // Sync database
 sequelize.sync()
@@ -53,6 +58,7 @@ app.post('/api/register', async (req, res) => {
     }
 });
 
+/* works */
 app.get('/', (req, res) => {
     res.json({ message: 'This is the root path!' });
 }); 

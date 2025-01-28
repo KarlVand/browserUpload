@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-// Root route
+/* works */
 router.get('/', (req, res) => {
     res.json({ message: 'Welcome to the API' });
 });
