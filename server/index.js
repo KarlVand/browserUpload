@@ -1,69 +1,41 @@
-
-/* ----- La base pour tout ----- */
 const express = require('express');
+const path = require('path');
 const cors = require('cors');
-const { Sequelize, DataTypes } = require('sequelize');
+const { Sequelize } = require('sequelize');
+const dbConfig = require('./config/database');
 const routes = require('./routes/index');
 
-/* ----- Import Models ----- */
-const defineUserModel = require('./models/user');
-
-/* ----- Import Routes ----- */
-const createUserRoutes = require('./routes/user');
-
 const app = express();
-/* ------------------- */
-
-
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// SQLite connection
-const sequelize = new Sequelize({
-    dialect: 'sqlite',
-    storage: './database.sqlite'
-});
+const env = process.env.NODE_ENV || 'development';
+let sequelize;
 
-
-/* ----- Suite Logique ----- */
-
-// Define User model
-const User = defineUserModel(sequelize);
-const userRoutes = createUserRoutes(User);
-
-
-
-// Sync database
-sequelize.sync()
-.then(() => {
-    const PORT = 5000;
-    app.listen(PORT, () => {
-        console.log(`Server running on http://localhost:${PORT}`);
+if (env === 'development') {
+    const dbPath = path.join(__dirname, '..', 'database.sqlite');
+    sequelize = new Sequelize({
+        dialect: 'sqlite',
+        storage: dbPath,
+        logging: false
     });
-})
-.catch(err => console.error('Error syncing database:', err));
+} else {
+    sequelize = new Sequelize(dbConfig[env]);
+}
 
-// Use routes
-app.use('/api', routes);  // All routes will be prefixed with /api
-
-// Registration endpoint
-app.post('/api/register', async (req, res) => {
-    try {
-        const { email, username, password } = req.body;
-        const user = await User.create({ username, password });
-        res.json({ message: 'User created successfully', userId: user.id });
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
-});
-
-/* works */
+app.use('/api', routes); 
 app.get('/', (req, res) => {
     res.json({ message: 'This is the root path!' });
 }); 
 
-const PORT = 5000;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+const PORT = process.env.PORT || 5000;
+sequelize.sync()
+    .then(() => {
+        PORT = 5000;
+        app.listen(PORT, () => {
+            console.log(`Server running on port ${PORT}`);
+        });
+    })
+    .catch(err => console.error('Error syncing database:', err));
+
+module.exports = sequelize;

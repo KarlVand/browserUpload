@@ -1,13 +1,17 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes } = require ("sequelize");
+const { sequelize } = require ('../index');
 
-const defineUserModel = (sequelize) => {
-    return sequelize.define('User', {
-        email: {
+
+
+const User = sequelize.define (
+    'User', 
+    {
+        username: {
             type: DataTypes.STRING,
             unique: true,
             allowNull: false
         },
-        username: {
+        email: {
             type: DataTypes.STRING,
             unique: true,
             allowNull: false
@@ -17,6 +21,5 @@ const defineUserModel = (sequelize) => {
             allowNull: false
         }
     });
-};
 
-module.exports = defineUserModel;
+module.exports = User;

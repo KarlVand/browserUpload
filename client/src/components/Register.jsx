@@ -9,18 +9,26 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const userData = { username, email, password };
+
     try {
-      const response = await fetch('http://localhost:5000/api/register', {
+      const response = await fetch('/api/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({  username, email, password }),
+        body: JSON.stringify({  userData }),
       });
       const data = await response.json();
-      setMessage(data.message);
+      if (response.ok) {
+        alert(`User created successfully! User ID: ${data.userId}`);
+      } else {
+        alert(`Error: ${data.error}`);
+      }
     } catch (error) {
-      setMessage('Error: ' + error.message);
+      console.error('Error registering user:', error);
+      alert('An error occurred, please try again.');
     }
   };
 
@@ -39,7 +47,7 @@ function Register() {
         <div className='mailInput'>
             <label htmlFor="email">Email</label>
             <input 
-            type="text" 
+            type="email" 
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)} />
@@ -53,7 +61,7 @@ function Register() {
                 onChange={(e) => setPassword(e.target.value)}
             />
         </div>
-        <button onClick={handleSubmit} type="submit">Register</button>
+        <button type="submit">Register</button>
       </form>
       {message && <p>{message}</p>}
     </div>
