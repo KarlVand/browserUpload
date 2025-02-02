@@ -8,12 +8,12 @@ router.get('/', (req, res) => {
 });
 
 router.get('/test', (req, res) => { 
-  res.json({ message: 'User routes are working!' });
+  res.json({ message: 'user routes are working!' });
 });
 
 
 /* ----- routes ----- */
-router.use('/users', userRoutes);
+router.use('/api/users', userRoutes);
 
 
 

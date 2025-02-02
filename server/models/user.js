@@ -1,7 +1,7 @@
 const sequelize  = require ('../index');
 const { DataTypes } = require ("sequelize");
 
-const User = sequelize.define (
+const userBuild = sequelize.define (
     'User', 
     {
         username: {
@@ -19,5 +19,8 @@ const User = sequelize.define (
             allowNull: false
         }
     });
+
+const User = sequelize.module("User", userBuild);
+
 
 module.exports = User;

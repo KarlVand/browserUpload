@@ -20,6 +20,7 @@ sequelize = new Sequelize({
 });
 
 app.use('/api', routes); 
+
 app.get('/', (req, res) => {
     res.json({ message: 'This is the root path!' });
 }); 
@@ -36,4 +37,4 @@ sequelize.sync()
 
 
 
-module.exports = sequelize;
+module.exports = sequelize, dbPath;

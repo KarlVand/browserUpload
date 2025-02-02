@@ -1,14 +1,14 @@
-
+@import "./variables.css";
 
 #loginForm, #registerForm {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    border: 2px solid #5058E9;
+    border: 2px solid var(--blue);
     border-radius: 12px;
     padding: 2rem;
     justify-content: space-between;
-    background-color: #242424;    
+    background-color: var(--grey-bg);    
 }
 
 .usernameInput, .mailInput, .passwordInput { 
@@ -25,11 +25,15 @@
 input {
     position: relative;
     flex-basis: 2;
-    border: 1px solid #5058E9;
-    background-color: #1A1A1A;
+    border: 1px solid var(--blue);
+    background-color: var(--dark-bg);
     padding-left: 15px;
-    border-radius: 5px;
-    
+    border-radius: 5px;   
+}
+
+input:focus {
+    border: 1px solid #646CFF;
+    background-color: var(--grey-bg);
 }
 
 .loginContainer p, .registerContainer p {
