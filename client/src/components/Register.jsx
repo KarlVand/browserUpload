@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import "../assets/css/authStyle.css";
+
 
 function Register() {
   const [username, setUsername] = useState('');
@@ -7,20 +8,37 @@ function Register() {
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/users/register");
+        const data = await response.json();
+        setMessage(data.message);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+  
+    fetchData();
+  }, []);
+  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const userData = { username, email, password };
 
     try {
-      const response = await fetch('/api/users/register', {
+      const response = await fetch('/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({  userData }),
+        body: JSON.stringify(userData),
       });
+      
       const data = await response.json();
+
       if (response.ok) {
         alert(`User created successfully! User ID: ${data.userId}`);
       } else {
