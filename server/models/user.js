@@ -20,7 +20,4 @@ const userBuild = sequelize.define (
         }
     });
 
-const User = sequelize.module("User", userBuild);
-
-
-module.exports = User;
+module.exports = userBuild;
